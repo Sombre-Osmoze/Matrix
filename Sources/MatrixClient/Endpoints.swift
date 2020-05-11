@@ -67,10 +67,15 @@ struct Endpoints {
 	// MARK: - Login
 
 	/// Login endpoint.
-	enum Login: String {
+	enum Authentications: String {
 		/// `/login`
 		case login
 	}
 
+	func authentication(_ endpoint: Authentications) -> URL? {
+		var components = main
+		components.path.append(endpoint.rawValue)
+		return components.url
+	}
 
 }

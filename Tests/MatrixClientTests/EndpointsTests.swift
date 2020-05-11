@@ -48,7 +48,13 @@ final class EndpointsTests: XCTestCase {
 
 	// MARK: - Login
 	func testLogin() {
+		guard let url = endpoints.authentication(.login) else {
+			XCTFail("Impossible to create login URL")
+			return
+		}
 
+		XCTAssertEqual(url.path, basePath + "/login",
+					   "Invalid path for login URL")
 	}
 
 
