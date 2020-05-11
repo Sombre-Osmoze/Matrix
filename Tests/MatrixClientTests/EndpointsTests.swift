@@ -10,7 +10,11 @@ import XCTest
 
 final class EndpointsTests: XCTestCase {
 
+	private let version : Endpoints.Version = .r0_6_0
+
 	private let endpoints : Endpoints = .init(protection: protectionSpace)
+
+	private let basePath : String = Endpoints.clientPath + "r0"
 
 	// MARK: - Endpoint
 
@@ -21,20 +25,35 @@ final class EndpointsTests: XCTestCase {
 					   "Matrix client version path is invalid")
 	}
 
+	func testMainURL() {
+		guard let main = endpoints.main.url else {
+			XCTFail("Impossible to create main URL")
+			return
+		}
+
+
+		XCTAssertEqual(main.host, protectionSpace.host,
+					   "Main URL host is invalid")
+
+		XCTAssertEqual(main.scheme, protectionSpace.protocol,
+					   "Main URL protocol is invalid")
+
+		XCTAssertEqual(main.port, protectionSpace.port,
+					   "Main URL port is invalid")
+
+		XCTAssertEqual(main.path, basePath,
+					   "Main URL path is invalid")
+
+	}
+
 	// MARK: - Login
 	func testLogin() {
 
 	}
 
 
-	func testExample() {
-		// This is an example of a functional test case.
-		// Use XCTAssert and related functions to verify your tests produce the correct
-		// results.
-		//        XCTAssertEqual(Matrix().text, "Hello, World!")
-	}
-
 	static var allTests = [
-		("testExample", testExample),
+		("Test endpoint version", testVersionEndpoint),
+		("Test main url", testMainURL),
 	]
 }
