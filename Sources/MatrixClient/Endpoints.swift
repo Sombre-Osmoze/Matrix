@@ -24,7 +24,7 @@ struct Endpoints {
 
 	// MARK: - Endpoints
 
-	enum Version : String, CaseIterable {
+	public enum Version : String, CaseIterable, Codable {
 
 		case r0_0_1 = "r0.0.1"
 		case r0_1_0 = "r0.1.0"
@@ -35,7 +35,7 @@ struct Endpoints {
 		case r0_6_0 = "r0.6.0"
 
 		/// r0 Major version
-		static let r0 : Set<Version> = [.r0_0_1, .r0_2_0, .r0_3_0,
+		public static let r0 : Set<Version> = [.r0_0_1, .r0_2_0, .r0_3_0,
 										.r0_4_0, .r0_5_0, .r0_6_0]
 	}
 
