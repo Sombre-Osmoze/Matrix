@@ -1,3 +1,10 @@
+//
+//  MatrixClientTests.swift
+//  MatrixClientTests
+//
+//  Created by Marcus Florentin on 12/05/2020.
+//
+
 import XCTest
 @testable import MatrixClient
 

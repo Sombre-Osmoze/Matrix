@@ -7,6 +7,18 @@
 
 import Foundation
 
+
 class MatrixClient {
-	
+
+
+	/// Verison
+	public struct Version: Codable {
+		public let versions : Set<Endpoints.Version>
+
+		public let unstableFeatures : [String : Bool]
+	}
+
+
+
+
 }
