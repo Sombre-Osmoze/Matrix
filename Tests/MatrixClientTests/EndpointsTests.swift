@@ -10,7 +10,7 @@ import XCTest
 
 final class EndpointsTests: XCTestCase {
 
-	private let version : Endpoints.Version = .r0_6_0
+	private let version : MatrixClient.Version = .r0_6_0
 
 	private let endpoints : Endpoints = .init(protection: protectionSpace)
 
