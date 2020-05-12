@@ -24,27 +24,12 @@ struct Endpoints {
 
 	// MARK: - Endpoints
 
-	public enum Version : String, CaseIterable, Codable {
-
-		case r0_0_1 = "r0.0.1"
-		case r0_1_0 = "r0.1.0"
-		case r0_2_0 = "r0.2.0"
-		case r0_3_0 = "r0.3.0"
-		case r0_4_0 = "r0.4.0"
-		case r0_5_0 = "r0.5.0"
-		case r0_6_0 = "r0.6.0"
-
-		/// r0 Major version
-		public static let r0 : Set<Version> = [.r0_0_1, .r0_2_0, .r0_3_0,
-										.r0_4_0, .r0_5_0, .r0_6_0]
-	}
-
 	private let protectionSpace : URLProtectionSpace
 
 	/// Main URL components, which will be used to create the endpoints.
 	let main : URLComponents
 
-	init(protection space: URLProtectionSpace, version: Version = .r0_6_0) {
+	init(protection space: URLProtectionSpace, version: MatrixClient.Version = .r0_6_0) {
 		protectionSpace = space
 
 		// Creating main URL components
@@ -54,7 +39,7 @@ struct Endpoints {
 		components.scheme = protectionSpace.protocol
 
 		switch version {
-			case let r where Version.r0.contains(r) :
+			case let r where MatrixClient.Version.r0.contains(r) :
 				components.path = Self.clientPath + "r0/"
 
 			default:
