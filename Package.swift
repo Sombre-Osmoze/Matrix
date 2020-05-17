@@ -5,6 +5,8 @@ import PackageDescription
 
 let package = Package(
     name: "Matrix",
+
+	// MARK: Matrix SDK
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
 		// MARK: - Matrix
@@ -18,7 +20,15 @@ let package = Package(
         .library(
             name: "MatrixClient",
             targets: ["MatrixClient"]),
+
+
+		// MARK: - Matrix Package
+
+		.library(name: "MatrixSDK", targets: ["MatrixSDK"])
+
     ],
+
+
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
@@ -54,5 +64,11 @@ let package = Package(
         .testTarget(
             name: "MatrixClientTests",
             dependencies: ["MatrixClient"]),
+
+
+		// MARK: Matrix SDK
+		.target(
+			name: "MatrixSDK",
+			dependencies : ["Matrix", "MatrixClient"]),
     ]
 )
