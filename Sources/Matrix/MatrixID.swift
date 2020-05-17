@@ -7,6 +7,8 @@
 
 import Foundation
 
+// TODO: Move structure to class
+
 public struct MatrixID : Codable, Hashable, Equatable, ExpressibleByStringLiteral {
 
 
@@ -57,6 +59,7 @@ public struct MatrixID : Codable, Hashable, Equatable, ExpressibleByStringLitera
 	public init(stringLiteral value: String) {
 
 		guard let atIndex = value.firstIndex(of: "@"), let semiIndex = value.firstIndex(of: ":") else {
+			// TODO: Handle error and create failable initializer
 			fatalError("No @ or :")
 		}
 
