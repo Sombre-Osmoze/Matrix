@@ -10,7 +10,9 @@ import XCTest
 #if !canImport(ObjectiveC)
 public func allTests() -> [XCTestCaseEntry] {
     return [
+		testCase(EndpointsTests.allTests),
         testCase(MatrixClientTests.allTests),
+		testCase(ResponsesTests.allTests),
     ]
 }
 #endif

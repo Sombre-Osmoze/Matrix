@@ -6,6 +6,7 @@
 //
 
 import Foundation
+@_exported import Matrix
 
 // MARK: - Matrix Client Class
 
