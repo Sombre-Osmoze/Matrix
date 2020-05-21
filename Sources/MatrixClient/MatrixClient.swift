@@ -94,7 +94,7 @@ public class MatrixClient {
 
 
 
-	// MARK: - Session & Resuests
+	// MARK: - Session & Requests
 
 	private let session : URLSession
 
