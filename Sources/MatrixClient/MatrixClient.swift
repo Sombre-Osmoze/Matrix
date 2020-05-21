@@ -12,7 +12,7 @@ import Foundation
 
 public class MatrixClient {
 
-	static let matrix : URLProtectionSpace = .init(host: "matrix.or", port: 443, protocol: "https",
+	static let matrix : URLProtectionSpace = .init(host: "matrix.org", port: 443, protocol: "https",
 												   realm: nil, authenticationMethod: nil)
 
 
