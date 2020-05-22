@@ -29,6 +29,20 @@ final class ResponsesTests: XCTestCase {
 	}
 
 
+	// MARK: - Error
+
+
+	func testErrorDecoding() throws {
+		let data = try file(named: "error_unrecognized", in: responsesFolder)
+
+		var error : ErrorResponse!
+
+		XCTAssertNoThrow(error = try decoder.decode(ErrorResponse.self, from: data))
+
+		XCTAssertEqual(error.code, ErrorResponse.Code.unrecognized)
+		XCTAssertEqual(error.domain, "M")
+	}
+
 	static var allTests = [
 		("Test login response decoding", testLoginResponseDecoding),
 	]
