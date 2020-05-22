@@ -35,11 +35,11 @@ final class ResponsesTests: XCTestCase {
 	func testErrorDecoding() throws {
 		let data = try file(named: "error_unrecognized", in: responsesFolder)
 
-		var error : ErrorResponse!
+		var error : ResponseError!
 
-		XCTAssertNoThrow(error = try decoder.decode(ErrorResponse.self, from: data))
+		XCTAssertNoThrow(error = try decoder.decode(ResponseError.self, from: data))
 
-		XCTAssertEqual(error.code, ErrorResponse.Code.unrecognized)
+		XCTAssertEqual(error.code, ResponseError.Code.unrecognized)
 		XCTAssertEqual(error.domain, "M")
 	}
 
