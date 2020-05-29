@@ -8,6 +8,10 @@
 import Foundation
 @_exported import Matrix
 
+#if canImport(Combine)
+import Combine
+#endif
+
 // MARK: - Matrix Client Class
 
 public class MatrixClient {
@@ -76,7 +80,7 @@ public class MatrixClient {
 		// Creating requests session and its queue
 		operationQueue = queue
 		session = .init(configuration: .default, delegate: delegate, delegateQueue: operationQueue)
-
+		session.sessionDescription = operationQueue.name
 
 		// Creating endpoints
 		endpoints = .init(protection: space, version: version)
@@ -96,11 +100,141 @@ public class MatrixClient {
 
 	// MARK: - Session & Requests
 
-	private let session : URLSession
+	// MARK: - Session
 
-	private let operationQueue : OperationQueue
+	public let session : URLSession
+
+	public let operationQueue : OperationQueue
 
 	private let endpoints : Endpoints
 
+	// MARK: - Request
+
+	/// This function will check the callback of a DataTaskRequest and will verify the satuts code.
+	private func verify(_ response: URLResponse?, _ error: Error?, log: StaticString) throws -> HTTPURLResponse {
+
+		// If a error occurred throw it
+		if let error = error {
+			throw error
+		}
+
+		// Checking if the request have a response
+		guard response != nil else { throw RequestError.Response.noResponse }
+
+		// Checking if the response is a HTTP response
+		guard let answer = response as? HTTPURLResponse else { throw RequestError.Response.corrupted }
+
+		// TODO: Verify status code
+
+		return answer
+	}
+
+	private func validate<T: Codable>(response: HTTPURLResponse, data: Data?, for type: T.Type = T.self, log: StaticString) throws -> T {
+
+		guard let data = data else { throw RequestError.noData }
+
+		// Checking if the content body is the size expected in the header
+		guard data.count == Int(response.expectedContentLength) else {
+			throw RequestError.dataCorrupted(expected: Int(response.expectedContentLength), received: data.count)
+		}
+
+		if let api = try? decoder.decode(ResponseError.self, from: data) {
+			throw api
+		} else {
+			return try decoder.decode(T.self, from: data)
+		}
+	}
+
+
+	#if canImport(Combine)
+
+	private func verify(task publisher: URLSession.DataTaskPublisher, log: StaticString) -> AnyPublisher<(Data, HTTPURLResponse), Error> {
+
+		// Verify the response and decoding the data.
+		publisher.tryMap { data, urlResponse -> (Data, HTTPURLResponse) in
+			let response = try self.verify(urlResponse, nil, log: log)
+			return (data, response)
+		}
+		.eraseToAnyPublisher()
+	}
+
+	private func validate<T: Codable>(_ publisher: AnyPublisher<(Data, HTTPURLResponse), Error>,
+									  for type: T.Type = T.self, log: StaticString) -> AnyPublisher<T, Error> {
+
+		// Try mapping data to expected type
+		publisher.tryMap { data, response -> T in
+			return try self.validate(response: response, data: data, log: log)
+		}
+		.eraseToAnyPublisher()
+	}
+
+	#endif
+
+
+	// MARK: - Authentications
+
+
+
+	// MARK: Login
+
+	// Login Flows
+	let loginFlowsLog : StaticString = "Login flows request"
+
+	/// Gets the homeserver's supported login types to authenticate users.
+	/// Clients should pick one of these and supply it as the `type` when logging in.
+	/// - Parameter handler: A closure call when the request is terminated.
+	/// - Returns: A progress object for the `URLDataTask`.
+	func loginFlows(completion handler: @escaping(Result<[LoginFlow], Error>) -> Void) -> Progress {
+		/// `/login`
+		let url : URL = endpoints.authentication(.login)!
+
+		/// The data task for this request
+		let task = session.dataTask(with: url) { unsafeData, reponse, error in
+			do {
+				let httpResponse = try self.verify(reponse, error, log: self.loginFlowsLog)
+
+				let loginResponses : LoginResponse = try self.validate(response: httpResponse,
+																	   data: unsafeData, log: self.loginFlowsLog)
+
+				handler(.success(loginResponses.flows))
+
+			} catch {
+				handler(.failure(error))
+			}
+		}
+
+		return task.progress
+	}
+
+	#if canImport(Combine)
+
+	func loginFlows() -> AnyPublisher<[LoginFlow], Error> {
+		/// `/login`
+		let url : URL = endpoints.authentication(.login)!
+
+
+		let task = session.dataTaskPublisher(for: url)
+		let verified = verify(task: task, log: loginFlowsLog)
+
+		return validate(verified, for: LoginResponse.self, log: loginFlowsLog)
+			.map(\.flows)
+		.eraseToAnyPublisher()
+	}
+
+	#endif
+
+
+	// MARK: - Error
+
+	public enum RequestError: Error {
+		case noURL
+
+		public enum Response: Error {
+			case noResponse
+			case corrupted
+		}
+		case noData
+		case dataCorrupted(expected: Int, received: Int)
+	}
 
 }

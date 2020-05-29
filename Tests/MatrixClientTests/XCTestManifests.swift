@@ -8,6 +8,17 @@
 import XCTest
 
 #if !canImport(ObjectiveC)
+
+#if canImport(Combine)
+public func allTests() -> [XCTestCaseEntry] {
+	return [
+		testCase(EndpointsTests.allTests),
+		testCase(MatrixClientCombineTests.allTests),
+		testCase(MatrixClientTests.allTests),
+		testCase(ResponsesTests.allTests),
+	]
+}
+#else
 public func allTests() -> [XCTestCaseEntry] {
     return [
 		testCase(EndpointsTests.allTests),
@@ -15,4 +26,6 @@ public func allTests() -> [XCTestCaseEntry] {
 		testCase(ResponsesTests.allTests),
     ]
 }
+#endif
+
 #endif

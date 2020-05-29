@@ -11,15 +11,33 @@ import XCTest
 let protectionSpace : URLProtectionSpace = .init(host: "matrix.org", port: 443, protocol: "https", realm: nil, authenticationMethod: nil)
 
 final class MatrixClientTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-//        XCTAssertEqual(Matrix().text, "Hello, World!")
-    }
+
+	private let client : MatrixClient = .init(protection: protectionSpace, operation: .main)
+
+
+	// MARK: - Login
+
+	func testLoginFlows() {
+
+		let requestExpectation = XCTestExpectation(description: "Login flows request")
+
+		client.loginFlows { result in
+			switch result {
+				case .success(let flows):
+					print(flows.debugDescription)
+				case .failure(let error):
+
+					XCTFail((error as? ResponseError)?.error ?? "")
+			}
+
+			requestExpectation.fulfill()
+		}.resume()
+
+		wait(for: [requestExpectation], timeout: 10)
+	}
 
     static var allTests = [
-        ("testExample", testExample),
+        ("testLoginFlows", testLoginFlows),
     ]
 }
 
