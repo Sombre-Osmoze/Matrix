@@ -57,9 +57,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "MatrixClientTests"
-               BuildableName = "MatrixClientTests"
-               BlueprintName = "MatrixClientTests"
+               BlueprintIdentifier = "MatrixTests"
+               BuildableName = "MatrixTests"
+               BlueprintName = "MatrixTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
