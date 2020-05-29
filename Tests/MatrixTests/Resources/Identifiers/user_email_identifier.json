@@ -1,0 +1,5 @@
+{
+	"type": "m.id.thirdparty",
+	"medium": "email",
+	"address": "swift-testing@matrix.org"
+}
