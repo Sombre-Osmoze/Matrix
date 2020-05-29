@@ -196,7 +196,7 @@ public struct LoginFlow: ResponsesAPI {
 }
 
 
-public struct LoginResponse: ResponsesAPI {
+public struct LoginFlowsResponse: ResponsesAPI {
 
 	/// The homeserver's supported login types
 	public let flows : [LoginFlow]

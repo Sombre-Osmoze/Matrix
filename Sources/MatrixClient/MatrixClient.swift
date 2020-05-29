@@ -193,7 +193,7 @@ public class MatrixClient {
 			do {
 				let httpResponse = try self.verify(reponse, error, log: self.loginFlowsLog)
 
-				let loginResponses : LoginResponse = try self.validate(response: httpResponse,
+				let loginResponses : LoginFlowsResponse = try self.validate(response: httpResponse,
 																	   data: unsafeData, log: self.loginFlowsLog)
 
 				handler(.success(loginResponses.flows))
@@ -216,7 +216,7 @@ public class MatrixClient {
 		let task = session.dataTaskPublisher(for: url)
 		let verified = verify(task: task, log: loginFlowsLog)
 
-		return validate(verified, for: LoginResponse.self, log: loginFlowsLog)
+		return validate(verified, for: LoginFlowsResponse.self, log: loginFlowsLog)
 			.map(\.flows)
 		.eraseToAnyPublisher()
 	}
