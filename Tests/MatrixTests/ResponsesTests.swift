@@ -7,7 +7,7 @@
 
 
 import XCTest
-@testable import MatrixClient
+@testable import Matrix
 
 final class ResponsesTests: XCTestCase {
 
