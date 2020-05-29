@@ -187,15 +187,6 @@ public struct ResponseError: ResponsesAPI, Error {
 
 // MARK: - Login
 
-/// A home server supported login
-public struct LoginFlow: ResponsesAPI {
-
-	/// The login type.
-	/// This is supplied as the `type` when logging in.
-	public let type : String
-}
-
-
 public struct LoginFlowsResponse: ResponsesAPI {
 
 	/// The homeserver's supported login types
