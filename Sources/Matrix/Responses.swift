@@ -1,6 +1,6 @@
 //
 //  Responses.swift.swift
-//  MatrixClient
+//  Matrix
 //
 //  Created by Marcus Florentin on 12/05/2020.
 //

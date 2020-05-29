@@ -1,6 +1,7 @@
 import XCTest
 
 import MatrixTests
+import MatrixClientTests
 
 var tests = [XCTestCaseEntry]()
 

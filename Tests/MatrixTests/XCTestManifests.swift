@@ -11,6 +11,8 @@ import XCTest
 public func allTests() -> [XCTestCaseEntry] {
 	return [
 		testCase(MatrixTests.allTests),
+		testCase(ResponsesTests.allTests),
+		testCase(MatrixIDTests.allTests),
 	]
 }
 #endif

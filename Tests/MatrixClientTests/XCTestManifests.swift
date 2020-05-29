@@ -15,7 +15,6 @@ public func allTests() -> [XCTestCaseEntry] {
 		testCase(EndpointsTests.allTests),
 		testCase(MatrixClientCombineTests.allTests),
 		testCase(MatrixClientTests.allTests),
-		testCase(ResponsesTests.allTests),
 	]
 }
 #else
@@ -23,7 +22,6 @@ public func allTests() -> [XCTestCaseEntry] {
     return [
 		testCase(EndpointsTests.allTests),
         testCase(MatrixClientTests.allTests),
-		testCase(ResponsesTests.allTests),
     ]
 }
 #endif

@@ -22,3 +22,24 @@ final class MatrixTests: XCTestCase {
 		("testExample", testExample),
 	]
 }
+
+// MARK: - Test Resources
+
+internal let resourceFolder : URL = {
+	var url = URL(fileURLWithPath: #file)
+	url.deletePathExtension()
+	url.deleteLastPathComponent()
+	url.appendPathComponent("Resources")
+	return url
+}()
+
+internal func file(named name: String, extention: String? = "json", in folder: URL = resourceFolder) throws -> Data {
+	var url = folder
+	url.appendPathComponent(name)
+
+	if let extention = extention {
+		url.appendPathExtension(extention)
+	}
+
+	return try Data(contentsOf: url)
+}
