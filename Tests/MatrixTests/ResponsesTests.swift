@@ -45,5 +45,6 @@ final class ResponsesTests: XCTestCase {
 
 	static var allTests = [
 		("Test login response decoding", testLoginResponseDecoding),
+		("Test error decoding", testErrorDecoding),
 	]
 }
