@@ -162,5 +162,9 @@ final class IdentifiersTests: XCTestCase {
 		("Test third party MSISDN identifier decoding", test3DrdMSISDNIdentifierDecoding),
 		("Test third party MSISDN identifier encoding", test3DrdMSISDNIdentifierEncoding),
 
+		// Phone identifier
+		("Test user phone identifier decoding", testPhoneIdentifierDecoding),
+		("Test user phone identifer encoding", testPhoneIdentifierEncoding),
+
 	]
 }
