@@ -1,6 +1,6 @@
 //
 //  ResponsesTests.swift
-//  MatrixClientTests
+//  MatrixTests
 //
 //  Created by Marcus Florentin on 17/05/2020.
 //
