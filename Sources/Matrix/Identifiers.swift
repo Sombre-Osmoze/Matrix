@@ -29,7 +29,112 @@ public enum IdentifierType : String, Codable, CaseIterable {
 public protocol Identifier : Codable {
 
 	var type : IdentifierType { get }
+}
 
+// MARK: - Coding
+
+/**
+/// Code not usable in the current Swift.
+```Swift
+extension Identifier {
+
+	public init(from decoder: Decoder) throws {
+
+		let identifier = try SimpleIdentifier(from: decoder)
+
+		if identifier.type == .user, let userIdentifier = try UserIdentifier(from: decoder) as? Self {
+			self = userIdentifier
+		}
+		else if identifier.type == .thirdparty,
+			let thirdIdentifier = try ThirdPartyIdentifier(from: decoder) as? Self {
+			self = thirdIdentifier
+		}
+		else if identifier.type == .phone,
+			let phoneIdentifier = try PhoneIdentifier(from: decoder) as? Self {
+			self = phoneIdentifier
+
+		} else {
+			let context = DecodingError.Context.init(codingPath: [],
+													 debugDescription: "Can't decode the identifier in a known one.")
+			throw DecodingError.dataCorrupted(context)
+		}
+	}
+
+	public func encode(to encoder: Encoder) throws {
+
+
+		if type == .user, let userIdentifier = self as? UserIdentifier {
+			try userIdentifier.encode(to: encoder)
+		}
+		else if type == .thirdparty,
+			let thirdIdentifier = self as? ThirdPartyIdentifier {
+
+			try	thirdIdentifier.encode(to: encoder)
+		}
+		else if type == .phone,
+			let phoneIdentifier = self as? PhoneIdentifier {
+
+			try phoneIdentifier.encode(to: encoder)
+		} else {
+			let context = EncodingError.Context.init(codingPath: [],
+													 debugDescription: "Can't encode the identifier in a known one.")
+			throw EncodingError.invalidValue(self, context)
+		}
+
+	}
+}
+```
+*/
+
+// MARK: Encoding
+
+internal extension KeyedEncodingContainer {
+
+	mutating func encodeIdentifier(_ identifier: Identifier, forKey key: KeyedEncodingContainer<K>.Key) throws {
+		if identifier.type == .user,
+			let userIdentifier = identifier as? UserIdentifier {
+
+			try encode(userIdentifier, forKey: key)
+		}
+		else if identifier.type == .thirdparty,
+			let thirdIdentifier = identifier as? ThirdPartyIdentifier {
+
+			try	encode(thirdIdentifier, forKey: key)
+		}
+		else if identifier.type == .phone,
+			let phoneIdentifier = identifier as? PhoneIdentifier {
+
+			try encode(phoneIdentifier, forKey: key)
+		} else {
+			let context = EncodingError.Context.init(codingPath: [],
+													 debugDescription: "Can't encode the identifier in a known one.")
+			throw EncodingError.invalidValue(self, context)
+		}
+	}
+
+}
+
+// MARK: Decoding
+
+extension KeyedDecodingContainer {
+
+	public func decodeIdentifier(forKey key: KeyedDecodingContainer<K>.Key) throws -> Identifier {
+		let identifier = try decode(SimpleIdentifier.self, forKey: key)
+
+		switch identifier.type {
+		case .user: return try decode(UserIdentifier.self, forKey: key)
+
+		case .thirdparty: return try decode(ThirdPartyIdentifier.self, forKey: key)
+
+		case .phone: return try decode(PhoneIdentifier.self, forKey: key)
+		}
+	}
+
+}
+
+
+ fileprivate struct SimpleIdentifier: Identifier {
+	let type: IdentifierType
 }
 
 // MARK: User Identifier
@@ -38,11 +143,16 @@ public protocol Identifier : Codable {
 /// This can either be the fully qualified Matrix user ID, or just the localpart of the user ID.
 public struct UserIdentifier: Identifier {
 
+
 	public let type: IdentifierType
 
 	/// user_id or user localpart.
 	public let user: MatrixID
 
+	public init(type: IdentifierType, user: MatrixID) {
+		self.type = type
+		self.user = user
+	}
 }
 
 
@@ -51,6 +161,7 @@ public struct UserIdentifier: Identifier {
 /// A client can identify a user using a 3PID associated with the user's account on the homeserver, where the 3PID was previously associated using the **/account/3pid** API.
 /// See the [3PID Types](https://matrix.org/docs/spec/appendices.html#pid-types) Appendix for a list of Third-party ID media.
 public struct ThirdPartyIdentifier: Identifier {
+
 
 	public let type: IdentifierType
 
@@ -78,6 +189,11 @@ public struct ThirdPartyIdentifier: Identifier {
 	/// The canonicalised third party address of the user.
 	public let address: String
 
+	public init(type: IdentifierType, medium: ThirdPartyIdentifier.Medium, address: String) {
+		self.type = type
+		self.medium = medium
+		self.address = address
+	}
 }
 
 // MARK: Phone Identifier
@@ -85,6 +201,7 @@ public struct ThirdPartyIdentifier: Identifier {
 /// A client can identify a user using a phone number associated with the user's account, where the phone number was previously associated using the **/account/3pid** API.
 /// The phone number can be passed in as entered by the user; the homeserver will be responsible for canonicalising it. If the client wishes to canonicalise the phone number, then it can use the `m.id.thirdparty` identifier type with a `medium` of `msisdn` instead.
 public struct PhoneIdentifier: Identifier {
+
 
 	public let type: IdentifierType
 
@@ -95,4 +212,9 @@ public struct PhoneIdentifier: Identifier {
 	/// The phone number.
 	public let phone : String
 
+	public init(type: IdentifierType, country: String, phone: String) {
+		self.type = type
+		self.country = country
+		self.phone = phone
+	}
 }
