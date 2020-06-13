@@ -149,8 +149,7 @@ public struct UserIdentifier: Identifier {
 	/// user_id or user localpart.
 	public let user: MatrixID
 
-	public init(type: IdentifierType, user: MatrixID) {
-		self.type = type
+	public init(user: MatrixID) {
 		self.user = user
 	}
 }
@@ -189,8 +188,7 @@ public struct ThirdPartyIdentifier: Identifier {
 	/// The canonicalised third party address of the user.
 	public let address: String
 
-	public init(type: IdentifierType, medium: ThirdPartyIdentifier.Medium, address: String) {
-		self.type = type
+	public init(medium: ThirdPartyIdentifier.Medium, address: String) {
 		self.medium = medium
 		self.address = address
 	}
@@ -212,8 +210,7 @@ public struct PhoneIdentifier: Identifier {
 	/// The phone number.
 	public let phone : String
 
-	public init(type: IdentifierType, country: String, phone: String) {
-		self.type = type
+	public init(country: String, phone: String) {
 		self.country = country
 		self.phone = phone
 	}
