@@ -12,13 +12,13 @@ if you need all libraries simply import `MatrixSDK`
 
 ### Matrix
 
-The global implemtation of [matrix] spécifications.
+The global implemtation of **[matrix]** spécifications.
 
 
 
 ### MatrixClient
 
-To get started with a [matrix] client you can create a instance:
+To get started with a **[matrix]** client you can create a instance:
 ```Swift
 let client = MatrixClient()
 ```
