@@ -12,6 +12,7 @@ public protocol LoginRequest: RequestsAPI {
 
 	var type : LoginFlow.Flow { get }
 
+	var deviceID : DeviceID? { get set }
 }
 
 public struct LoginPasswordRequest: LoginRequest {
@@ -22,6 +23,7 @@ public struct LoginPasswordRequest: LoginRequest {
 
 	public let password : String
 
+	public var deviceID: DeviceID? = nil
 	public let initialDeviceName : String
 
 
@@ -37,6 +39,7 @@ public struct LoginPasswordRequest: LoginRequest {
 		case type
 		case identifier
 		case password
+		case deviceID = "device_id"
 		case initialDeviceName = "initial_device_display_name"
 	}
 
@@ -52,6 +55,7 @@ public struct LoginPasswordRequest: LoginRequest {
 
 		password = try container.decode(String.self, forKey: .password)
 		initialDeviceName = try container.decode(String.self, forKey: .initialDeviceName)
+		deviceID = try container.decode(DeviceID.self, forKey: .deviceID)
 		identifier = try container.decodeIdentifier(forKey: .identifier)
 	}
 
