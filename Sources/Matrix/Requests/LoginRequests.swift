@@ -65,6 +65,7 @@ public struct LoginPasswordRequest: LoginRequest {
 		try container.encode(type, forKey: .type)
 		try container.encode(password, forKey: .password)
 		try container.encode(initialDeviceName, forKey: .initialDeviceName)
+		try container.encode(deviceID, forKey: .deviceID)
 		try container.encodeIdentifier(identifier, forKey: .identifier)
 	}
 
