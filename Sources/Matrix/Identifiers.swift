@@ -39,12 +39,13 @@ public protocol Identifier : Codable {
 public struct UserIdentifier: Identifier {
 
 
-	public let type: IdentifierType = .user
+	public let type: IdentifierType
 
 	/// user_id or user localpart.
 	public let user: MatrixID
 
 	public init(user: MatrixID) {
+		self.type = .user
 		self.user = user
 	}
 }
@@ -57,7 +58,7 @@ public struct UserIdentifier: Identifier {
 public struct ThirdPartyIdentifier: Identifier {
 
 
-	public let type: IdentifierType = .thirdparty
+	public let type: IdentifierType
 
 	/// The medium of the third party identifier.
 	public let medium: Medium
@@ -84,6 +85,7 @@ public struct ThirdPartyIdentifier: Identifier {
 	public let address: String
 
 	public init(medium: ThirdPartyIdentifier.Medium, address: String) {
+		self.type = .thirdparty
 		self.medium = medium
 		self.address = address
 	}
@@ -96,7 +98,7 @@ public struct ThirdPartyIdentifier: Identifier {
 public struct PhoneIdentifier: Identifier {
 
 
-	public let type: IdentifierType = .phone
+	public let type: IdentifierType
 
 	/// The country that the phone number is from
 	/// - note: The `country` is the two-letter uppercase ISO-3166-1 alpha-2 country code that the number in `phone` should be parsed as if it were dialled from.
@@ -106,6 +108,7 @@ public struct PhoneIdentifier: Identifier {
 	public let phone : String
 
 	public init(country: String, phone: String) {
+		self.type = .phone
 		self.country = country
 		self.phone = phone
 	}

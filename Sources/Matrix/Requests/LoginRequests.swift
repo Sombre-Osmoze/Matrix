@@ -17,7 +17,7 @@ public protocol LoginRequest: RequestsAPI {
 
 public struct LoginPasswordRequest: LoginRequest {
 
-	public let type : LoginFlow.Flow = .password
+	public let type : LoginFlow.Flow
 
 	public let identifier : Identifier
 
@@ -28,7 +28,7 @@ public struct LoginPasswordRequest: LoginRequest {
 
 
 	public init(_ identifier: Identifier, password: String, device name: String) {
-
+		self.type = .password
 		self.identifier = identifier
 		self.password = password
 		self.initialDeviceName = name
@@ -45,8 +45,8 @@ public struct LoginPasswordRequest: LoginRequest {
 
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
-
 		let decodedType = try container.decode(LoginFlow.Flow.self, forKey: .type)
+		self.type = .password
 		guard decodedType == type else {
 			throw DecodingError.dataCorruptedError(forKey: CodingKeys.type, in: container,
 												   debugDescription: "Type value equal to \(decodedType) expecting \(type)")
