@@ -13,7 +13,7 @@ public struct DiscoveryInformation: Codable {
 		public let baseURL : URL?
 	}
 
-	public let homeServer : ServerInformations?
+	public let homeServer : ServerInformations
 
 	public let identifyServer : ServerInformations?
 
