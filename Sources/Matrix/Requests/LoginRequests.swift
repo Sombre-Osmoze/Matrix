@@ -55,7 +55,7 @@ public struct LoginPasswordRequest: LoginRequest {
 
 		password = try container.decode(String.self, forKey: .password)
 		initialDeviceName = try container.decode(String.self, forKey: .initialDeviceName)
-		deviceID = try container.decode(DeviceID.self, forKey: .deviceID)
+		deviceID = try container.decodeIfPresent(DeviceID.self, forKey: .deviceID)
 		identifier = try container.decodeIdentifier(forKey: .identifier)
 	}
 
