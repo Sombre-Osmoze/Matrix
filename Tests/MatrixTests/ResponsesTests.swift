@@ -21,7 +21,7 @@ final class ResponsesTests: XCTestCase {
 
 	func testLoginResponseDecoding() throws {
 
-		let data = try file(named: "login", in: responsesFolder)
+		let data = try file(named: "login_flows_request", in: responsesFolder)
 
 
 		XCTAssertNoThrow(try decoder.decode(LoginFlowsResponse.self, from: data))
