@@ -100,7 +100,7 @@ public class MatrixClient {
 
 	// MARK: - Session & Requests
 
-	// MARK: - Session
+	// MARK: Session
 
 	public let session : URLSession
 
@@ -108,7 +108,7 @@ public class MatrixClient {
 
 	private let endpoints : Endpoints
 
-	// MARK: - Request
+	// MARK: Request
 
 	/// This function will check the callback of a DataTaskRequest and will verify the satuts code.
 	private func verify(_ response: URLResponse?, _ error: Error?, log: StaticString) throws -> HTTPURLResponse {
@@ -184,7 +184,7 @@ public class MatrixClient {
 	/// Clients should pick one of these and supply it as the `type` when logging in.
 	/// - Parameter handler: A closure call when the request is terminated.
 	/// - Returns: A progress object for the `URLDataTask`.
-	func loginFlows(completion handler: @escaping(Result<[LoginFlow], Error>) -> Void) -> Progress {
+	public func loginFlows(completion handler: @escaping(Result<[LoginFlow], Error>) -> Void) -> Progress {
 		/// `/login`
 		let url : URL = endpoints.authentication(.login)!
 
@@ -208,7 +208,7 @@ public class MatrixClient {
 
 	#if canImport(Combine)
 
-	func loginFlows() -> AnyPublisher<[LoginFlow], Error> {
+	public func loginFlows() -> AnyPublisher<[LoginFlow], Error> {
 		/// `/login`
 		let url : URL = endpoints.authentication(.login)!
 
