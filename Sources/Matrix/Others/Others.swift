@@ -13,8 +13,10 @@ public struct DiscoveryInformation: Codable {
 		public let baseURL : URL?
 	}
 
+	/// Used by clients to discover homeserver information.
 	public let homeServer : ServerInformations
 
+	/// Used by clients to discover identity server information.
 	public let identifyServer : ServerInformations?
 
 }
