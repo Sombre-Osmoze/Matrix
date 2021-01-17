@@ -12,7 +12,7 @@ if you need all libraries simply import `MatrixSDK`
 
 ### Matrix
 
-The global implemtation of **[matrix]** spécifications.
+The global implementation of **[matrix]** specifications.
 
 
 
