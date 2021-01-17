@@ -19,13 +19,22 @@ final class ResponsesTests: XCTestCase {
 
 	// MARK: - Login
 
-	func testLoginResponseDecoding() throws {
+	func testLoginFlowsResponseDecoding() throws {
 
 		let data = try file(named: "login_flows_request", in: responsesFolder)
 
 
 		XCTAssertNoThrow(try decoder.decode(LoginFlowsResponse.self, from: data))
 
+	}
+
+	/// Test the login response decoding.
+	func testLoginResponseDecoding() throws {
+
+		let data = try file(named: "login_response", in: responsesFolder)
+
+
+		XCTAssertNoThrow(try decoder.decode(LoginResponse.self, from: data))
 	}
 
 
@@ -44,6 +53,7 @@ final class ResponsesTests: XCTestCase {
 	}
 
 	static var allTests = [
+		("Test login flows response decoding", testLoginFlowsResponseDecoding),
 		("Test login response decoding", testLoginResponseDecoding),
 		("Test error decoding", testErrorDecoding),
 	]
