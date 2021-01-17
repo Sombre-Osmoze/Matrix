@@ -19,4 +19,8 @@ public struct DiscoveryInformation: Codable {
 	/// Used by clients to discover identity server information.
 	public let identifyServer : ServerInformations?
 
+	public enum CodingKeys: String, CodingKey {
+		case homeServer = "m.homeserver"
+		case identifyServer = "m.identity_server"
+	}
 }

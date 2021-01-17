@@ -18,4 +18,8 @@ public let encoder : JSONEncoder = .init()
 // MARK: Decoding
 
 /// Matrix JSON object encoder.
-public let decoder : JSONDecoder = .init()
+public let decoder : JSONDecoder = {
+	let coder = JSONDecoder()
+	coder.keyDecodingStrategy = .convertFromSnakeCase
+	return coder
+}()
