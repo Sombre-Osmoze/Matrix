@@ -39,8 +39,8 @@ public struct LoginPasswordRequest: LoginRequest {
 		case type
 		case identifier
 		case password
-		case deviceID = "device_id"
-		case initialDeviceName = "initial_device_display_name"
+		case deviceID = "deviceId"
+		case initialDeviceName = "initialDeviceDisplayName"
 	}
 
 	public init(from decoder: Decoder) throws {
