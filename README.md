@@ -1,6 +1,8 @@
 # Matrix
 
-A Swift Package made for [[matrix]](https://matrix.org)
+A Swift Package made for **[[matrix]](https://matrix.org)**
+
+> This project is under development
 
 The SDK contains: `Matrix`, `MatrixClient`.
 
