@@ -36,8 +36,33 @@ final class MatrixClientTests: XCTestCase {
 		wait(for: [requestExpectation], timeout: 10)
 	}
 
+	func testLogin() throws {
+
+		let requestData : Data = try file(named: "login_password_request")
+		let request = try decoder.decode(LoginPasswordRequest.self, from: requestData)
+
+		let requestExpectation = XCTestExpectation(description: "Login request")
+
+
+		try client.login(request) { result in
+			switch result {
+				case .success(let response):
+				XCTAssertEqual(response.userID, (request.identifier as! UserIdentifier).user)
+				XCTAssertEqual(response.deviceID, request.deviceID)
+
+				case .failure(let error):
+					XCTFail((error as? ResponseError)?.error ?? error.localizedDescription)
+			}
+
+			requestExpectation.fulfill()
+		}.resume()
+
+		wait(for: [requestExpectation], timeout: 10)
+	}
+
     static var allTests = [
         ("testLoginFlows", testLoginFlows),
+		("Test login request", testLogin),
     ]
 }
 

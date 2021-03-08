@@ -26,16 +26,18 @@ class RequestsTests: XCTestCase {
 		var request : LoginPasswordRequest!
 		XCTAssertNoThrow(request = try decoder.decode(LoginPasswordRequest.self, from: data))
 
-		XCTAssertEqual(request.type, .password)
-		XCTAssertEqual(request.password, "Swift4L!f3")
-		XCTAssertEqual(request.initialDeviceName, "Swift-Package")
+		guard let requestSafe = request else { return }
 
-		if let identifier = request.identifier as? UserIdentifier {
+		XCTAssertEqual(requestSafe.type, .password)
+		XCTAssertEqual(requestSafe.password, "Swift4L!f3")
+		XCTAssertEqual(requestSafe.initialDeviceName, "Swift-Package")
+
+		if let identifier = requestSafe.identifier as? UserIdentifier {
 			XCTAssertEqual(identifier.type, .user)
 			XCTAssertEqual(identifier.user, "@swift-testing:matrix.org")
 
 		} else {
-			XCTFail("Can't create user identifier got type: \(request.identifier.type)")
+			XCTFail("Can't create user identifier got type: \(requestSafe.identifier.type)")
 		}
 
 	}

@@ -24,20 +24,36 @@ final class MatrixClientCombineTests: XCTestCase {
 
 		let requestExpectation = XCTestExpectation(description: "Login flows request")
 
-		let publisher = client.loginFlows()
+		client.loginFlows()
 			.sink(receiveCompletion: { completion in
 				self.handle(completion: completion)
 				requestExpectation.fulfill()
 			}) { flows in
 				print(flows.debugDescription)
 		}
-
-
-		publishers.append(publisher)
+			.store(in: &publishers)
 
 		wait(for: [requestExpectation], timeout: 10)
 	}
 
+
+	func testCombineLogin() throws {
+		let requestData : Data = try file(named: "login_password_request")
+		let request = try decoder.decode(LoginPasswordRequest.self, from: requestData)
+
+		let requestExpectation = XCTestExpectation(description: "Login request")
+
+		try client.login(request)
+			.sink(receiveCompletion: { completion in
+				self.handle(completion: completion)
+				requestExpectation.fulfill()
+			}){ response in
+				XCTAssertEqual(response.userID, (request.identifier as? UserIdentifier)?.user)
+			}
+			.store(in: &publishers)
+
+		wait(for: [requestExpectation], timeout: 10)
+	}
 
 	// MARK: - Completion & Errors
 
@@ -65,6 +81,7 @@ final class MatrixClientCombineTests: XCTestCase {
 
 	static var allTests = [
 		("testLoginFlows", testCombineLoginFlows),
+		("Test Login", testCombineLogin),
 	]
 }
 

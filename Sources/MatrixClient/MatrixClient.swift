@@ -98,7 +98,7 @@ public class MatrixClient {
 
 
 
-	// MARK: - Session & Requests
+	// MARK: - Session & Requests & Responses
 
 	// MARK: Session
 
@@ -108,7 +108,20 @@ public class MatrixClient {
 
 	private let endpoints : Endpoints
 
-	// MARK: Request
+	// MARK: Requests
+
+	public enum HTTPMethod: String {
+		case POST
+	}
+
+	private func prepare<Body: Encodable>(request: inout URLRequest, for method: HTTPMethod,
+										  with body: Body) throws {
+		request.httpMethod = method.rawValue
+		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+		request.httpBody = try encoder.encode(body)
+	}
+
+	// MARK: Responses
 
 	/// This function will check the callback of a DataTaskRequest and will verify the satuts code.
 	private func verify(_ response: URLResponse?, _ error: Error?, log: StaticString) throws -> HTTPURLResponse {
@@ -189,9 +202,9 @@ public class MatrixClient {
 		let url : URL = endpoints.authentication(.login)!
 
 		/// The data task for this request
-		let task = session.dataTask(with: url) { unsafeData, reponse, error in
+		let task = session.dataTask(with: url) { unsafeData, response, error in
 			do {
-				let httpResponse = try self.verify(reponse, error, log: self.loginFlowsLog)
+				let httpResponse = try self.verify(response, error, log: self.loginFlowsLog)
 
 				let loginResponses : LoginFlowsResponse = try self.validate(response: httpResponse,
 																	   data: unsafeData, log: self.loginFlowsLog)
@@ -221,6 +234,63 @@ public class MatrixClient {
 		.eraseToAnyPublisher()
 	}
 
+	#endif
+
+
+	// Login Password Request
+	let loginPasswordLog : StaticString = "Login password request"
+
+
+	/// Login request
+	/// - Parameters:
+	///   - loginRequest: The login request parameters
+	///   - handler: A callback called when the request will be done.
+	/// - Returns: The task progress.
+	func login<Request: LoginRequest>(_ loginRequest: Request,
+								completion handler: @escaping(Result<LoginResponse, Error>) -> Void) throws -> Progress {
+		/// `/login`
+		let url : URL = endpoints.authentication(.login)!
+
+		// Preparing request
+		var request = URLRequest(url: url)
+		try prepare(request: &request,  for: .POST, with: loginRequest)
+
+		let task = session.dataTask(with: request) { unsafeData, response, error in
+
+			do {
+				let httpResponse = try self.verify(response, error, log: self.loginPasswordLog)
+
+				let loginResponse : LoginResponse = try self.validate(response: httpResponse,
+																	   data: unsafeData,
+																	   log: self.loginPasswordLog)
+
+				handler(.success(loginResponse))
+			} catch {
+				handler(.failure(error))
+			}
+		}
+
+		return task.progress
+	}
+
+	#if canImport(Combine)
+	/// Login request
+	/// - Parameter loginRequest: The login request parameters
+	/// - Returns: A login response publisher
+	public func login<Request: LoginRequest>(_ loginRequest: Request) throws -> AnyPublisher<LoginResponse, Error> {
+		/// `/login`
+		let url : URL = endpoints.authentication(.login)!
+
+		// Preparing request
+		var request = URLRequest(url: url)
+		try prepare(request: &request,  for: .POST, with: loginRequest)
+
+		let task = session.dataTaskPublisher(for: request)
+		let verified = verify(task: task, log: loginPasswordLog)
+
+		return validate(verified, for: LoginResponse.self, log: loginPasswordLog)
+			.eraseToAnyPublisher()
+	}
 	#endif
 
 
