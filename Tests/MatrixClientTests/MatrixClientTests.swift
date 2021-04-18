@@ -12,7 +12,7 @@ let protectionSpace : URLProtectionSpace = .init(host: "matrix.org", port: 443, 
 
 final class MatrixClientTests: XCTestCase {
 
-	private let client : MatrixClient = .init(protection: protectionSpace, operation: .main)
+	private let client : MatrixClient = .init(protection: protectionSpace, operation: .main, logger: .init(label: "test-client.matrix.org"))
 
 
 	// MARK: - Login

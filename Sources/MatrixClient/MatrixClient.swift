@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 @_exported import Matrix
 
 #if canImport(Combine)
@@ -21,6 +22,8 @@ public class MatrixClient {
 
 
 	// MARK: - Matrix Client
+
+	public let logger : Logger
 
 	/// Actual version used by the client.
 	public let version : Version
@@ -73,8 +76,10 @@ public class MatrixClient {
 	public init(_ version: Version = .r0_6_0,
 		 protection space: URLProtectionSpace,
 		 operation queue: OperationQueue,
+		 logger: Logger,
 		 session delegate: URLSessionDelegate? = nil) {
 
+		self.logger = logger
 		self.version = version
 
 		// Creating requests session and its queue
@@ -93,7 +98,8 @@ public class MatrixClient {
 		queue.qualityOfService = .userInitiated
 		queue.name = "xyz.osmoze.MatrixClient"
 
-		self.init(protection: MatrixClient.matrix, operation: queue)
+
+		self.init(protection: MatrixClient.matrix, operation: queue, logger: .init(label: "client.matrix.org"))
 	}
 
 
