@@ -63,4 +63,18 @@ struct Endpoints {
 		return components.url
 	}
 
+	// MARK: - Rooms
+
+	/// Rooms endpoints
+	enum Rooms: String {
+		case joinedRooms = "joined_rooms"
+
+	}
+
+	func rooms(_ endpoint: Rooms) -> URL? {
+		var components = main
+		components.path.append(endpoint.rawValue)
+		return components.url
+	}
+
 }
