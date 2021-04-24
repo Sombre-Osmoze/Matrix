@@ -74,7 +74,7 @@ final class MatrixIDTests: XCTestCase {
 		XCTAssertNoThrow(identifier = try decoder.decode(MatrixID.self, from: data))
 
 		XCTAssertEqual(identifier?.username, username)
-		XCTAssertNoThrow(identifier?.hostname, hostname)
+		XCTAssertNoThrow(identifier?.host, hostname)
 	}
 
 

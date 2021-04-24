@@ -16,21 +16,21 @@ public struct MatrixID : Codable, Hashable, Equatable, ExpressibleByStringLitera
 	public let username : String
 
 	/// The `hostname` where the user is registered.
-	public let hostname : String
+	public let host : String
 
 	public let description : String
 
 	public let debugDescription : String
 
-	/// Create a `Matrix` identifer with given username and hostname
+	/// Create a `Matrix` identifer with given username and host
 	/// - Parameters:
 	///   - username: The username of th identifier
-	///   - hostname: The server name of the identifier
+	///   - host: The server name of the identifier
 	public init(username: String, hostname: String) {
 		self.username = username
-		self.hostname = hostname
+		self.host = hostname
 		self.description = "@\(username):\(hostname)"
-		self.debugDescription = "\(description): { username : \(username), hostname: \(hostname) "
+		self.debugDescription = "\(description): { username : \(username), host: \(host) "
 	}
 
 	// MARK: - Codable
