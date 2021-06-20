@@ -27,7 +27,7 @@ final class EndpointsTests: XCTestCase {
 
 	func testMainURL() {
 		guard let main = endpoints.main.url else {
-			XCTFail("Impossible to create main URL")
+			failedTorCreate(url: "main")
 			return
 		}
 
@@ -48,15 +48,41 @@ final class EndpointsTests: XCTestCase {
 
 	// MARK: - Login
 	func testLogin() {
+		let urlPath = "/login"
+
 		guard let url = endpoints.authentication(.login) else {
-			XCTFail("Impossible to create login URL")
+			failedTorCreate(url: "login")
 			return
 		}
 
-		XCTAssertEqual(url.path, basePath + "/login",
-					   "Invalid path for login URL")
+		XCTAssertEqual(url.path, basePath + urlPath,
+					   invalidPathFor(url: urlPath))
 	}
 
+	// MARK: - Rooms
+
+	func testJoinedRooms() {
+		let urlPath = "/joined_rooms"
+
+		guard let url = endpoints.rooms(.joinedRooms) else {
+			failedTorCreate(url: "joined rooms")
+			return
+		}
+
+		XCTAssertEqual(url.path, basePath + urlPath,
+					   invalidPathFor(url: urlPath))
+	}
+
+
+	// MARK: - Misc
+
+	private func failedTorCreate(url: String) -> Void {
+		XCTFail("Impossible to create \(url) URL")
+	}
+
+	private func invalidPathFor(url: String) -> String {
+		"Invalid path for \(url) URL"
+	}
 
 	static var allTests = [
 		("Test endpoint version", testVersionEndpoint),
