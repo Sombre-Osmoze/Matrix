@@ -13,7 +13,12 @@ import Foundation
 // MARK: Encoding
 
 /// Matrix JSON object decoder.
-public let encoder : JSONEncoder = .init()
+public let encoder : JSONEncoder = {
+    let coder = JSONEncoder()
+    coder.keyEncodingStrategy = .convertToSnakeCase
+    coder.dateEncodingStrategy = .millisecondsSince1970
+    return coder
+}()
 
 // MARK: Decoding
 
@@ -21,5 +26,6 @@ public let encoder : JSONEncoder = .init()
 public let decoder : JSONDecoder = {
 	let coder = JSONDecoder()
 	coder.keyDecodingStrategy = .convertFromSnakeCase
+    coder.dateDecodingStrategy = .millisecondsSince1970
 	return coder
 }()
