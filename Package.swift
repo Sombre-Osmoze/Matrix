@@ -35,6 +35,9 @@ let package = Package(
 
 		// 📄 Log
 		.package(url: "https://github.com/apple/swift-log.git", from: "1.4.2"),
+
+        // 🌐 Graph
+        .package(url: "https://github.com/davecom/SwiftGraph.git", from: "3.1.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -45,7 +48,9 @@ let package = Package(
 		// MARK: Matrix Target
 		.target(
 			name: "Matrix",
-			dependencies: []),
+			dependencies: [
+                .product(name: "SwiftGraph", package: "SwiftGraph")
+            ]),
 
 
 		// MARK: Matrix Client Target
