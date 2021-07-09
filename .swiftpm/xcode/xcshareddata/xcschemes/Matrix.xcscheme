@@ -46,9 +46,9 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "MatrixClient"
-            BuildableName = "MatrixClient"
-            BlueprintName = "MatrixClient"
+            BlueprintIdentifier = "Matrix"
+            BuildableName = "Matrix"
+            BlueprintName = "Matrix"
             ReferencedContainer = "container:">
          </BuildableReference>
       </CodeCoverageTargets>
@@ -60,6 +60,16 @@
                BlueprintIdentifier = "MatrixTests"
                BuildableName = "MatrixTests"
                BlueprintName = "MatrixTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "MatrixClientTests"
+               BuildableName = "MatrixClientTests"
+               BlueprintName = "MatrixClientTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
